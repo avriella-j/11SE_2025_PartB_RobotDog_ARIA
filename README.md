@@ -1,4 +1,3 @@
-# 11SE_2025_PartB_RobotDog_ARIA-
 # Robot Dog ARIA
 
 An advanced quadruped robot dog with multiple control systems and sensors.
@@ -46,13 +45,43 @@ Run the main application:
 python main_code.py
 ```
 
-The robot will:
-1. Initialize and power on
-2. Set up camera and stability monitoring
-3. Perform a movement sequence
-4. Check and adjust stability
-5. Track a target
-6. Clean up and shut down
+### Keyboard Controls
+
+#### Movement Controls
+- Up Arrow: Move forward
+- Down Arrow: Move backward
+- Left Arrow: Turn left
+- Right Arrow: Turn right
+
+#### Menu Controls
+- P: Show settings
+- M: Show main menu
+- ESC: Exit program
+
+#### Main Menu (press M)
+- 1: Sensor Settings
+- 2: Camera Settings
+- 3: Movement Settings
+- ESC: Return to main screen
+
+#### Settings Menu (press P)
+- Shows current settings
+- Movement speed
+- Turn speed
+- Power status
+- Stability status
+
+### Default Settings
+- Movement speed: 100 mm
+- Turn speed: 15 degrees
+- Accelerometer:
+  - Enabled: True
+  - Sensitivity: 0.8
+  - Threshold: 0.3
+- Camera:
+  - Resolution: 1280x720
+  - Framerate: 30 FPS
+  - Zoom: 1.0
 
 ## Components
 
