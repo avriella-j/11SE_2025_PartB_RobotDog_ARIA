@@ -1,4 +1,4 @@
-from ..config.settings_controls import RobotDogSettings
+from config.settings_controls import RobotDogSettings
 import cv2
 import numpy as np
 
