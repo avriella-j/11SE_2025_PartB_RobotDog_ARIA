@@ -1,4 +1,4 @@
-from ..config.settings_controls import RobotDogSettings
+from config.settings_controls import RobotDogSettings
 
 class BaseCommands:
     def __init__(self, settings: RobotDogSettings):
