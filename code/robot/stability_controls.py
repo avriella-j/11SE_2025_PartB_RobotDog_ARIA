@@ -1,5 +1,5 @@
-from ..config.settings_controls import RobotDogSettings
-from .sensor_controls import SensorControls
+from config.settings_controls import RobotDogSettings
+from robot.sensor_controls import SensorControls
 
 class StabilityControls:
     def __init__(self, settings: RobotDogSettings):
@@ -7,6 +7,24 @@ class StabilityControls:
         self.sensor_controls = SensorControls(settings)
         self._is_stabilizing = False
         self._stability_threshold = 0.7  # Default stability threshold
+        self._last_stability_score = 1.0  # Default stable state
+        
+    def start_stability_monitor(self):
+        """Start monitoring stability."""
+        if not self.settings.get_setting('accelerometer.enabled'):
+            raise RuntimeError("Accelerometer is not enabled in settings")
+            
+        try:
+            self.sensor_controls.start_accelerometer()
+            self._is_stabilizing = True
+            print("Stability monitoring started")
+            # Read initial data to ensure we have a value
+            self.sensor_controls.read_accelerometer()
+        except RuntimeError as e:
+            print(f"Warning: {e}")
+            print("Stability monitoring failed to start")
+            self._is_stabilizing = False
+            raise
 
     def start_stability_monitor(self):
         """Start monitoring stability."""
@@ -23,12 +41,17 @@ class StabilityControls:
     def check_stability(self):
         """Check if robot is stable."""
         if not self._is_stabilizing:
-            raise RuntimeError("Stability monitoring is not active")
+            return self._last_stability_score >= self._stability_threshold
             
-        stability_score = self.sensor_controls.check_stability()
-        print(f"Current stability score: {stability_score:.2f}")
-        
-        return stability_score >= self._stability_threshold
+        try:
+            stability_score = self.sensor_controls.check_stability()
+            if stability_score is not None:
+                self._last_stability_score = stability_score
+                print(f"Current stability score: {stability_score:.2f}")
+            return stability_score >= self._stability_threshold
+        except Exception as e:
+            print(f"Error checking stability: {e}")
+            return self._last_stability_score >= self._stability_threshold
 
     def adjust_position(self):
         """Adjust position to improve stability."""
